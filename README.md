@@ -4,9 +4,13 @@ In this app, you type a query term for the Stackoverflow website and get a list 
 
 In this app, you will find uses of the following libraries:
 -Roboguice 
+
 -Butterknife
+
 -ORMlite
+
 -Retrofit
+
 -Picasso
 
 Feel free to comment or ask questions
