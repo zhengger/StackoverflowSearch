@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_searchresult_layout">
+
+    <TextView android:id="@+id/txtHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_refreshfeed"
+        android:textColor="#FFFFFF"
+        android:padding="10dp"
+        android:text="Refresh feed"
+        android:background="#336699" />
+
+</LinearLayout>

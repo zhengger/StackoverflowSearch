@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">StackOverflow Search</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="services_process">:ServicesProcess</string>
+    <string name="ongoing_search_please_wait">We are fetching your search results</string>
+</resources>
