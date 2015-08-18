@@ -13,4 +13,4 @@ In this app, you will find uses of the following libraries:
 
 -Picasso
 
-Feel free to comment or ask questions
+Feel free to comment or ask questions: brunopierrecarrier@gmail.com
