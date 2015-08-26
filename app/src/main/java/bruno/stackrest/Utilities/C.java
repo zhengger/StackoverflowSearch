@@ -11,6 +11,10 @@ public class C {
         String SEARCH_IN_TITLE_PARAMETER = "Search in-title parameter";
     }
 
+    public interface Fragments {
+        String HEADLESS_FRAGMENT_TAG = "Headless Fragment";
+    }
+
     public interface Database {
         String DATABASE_NAME = "StackSearch.db";
 

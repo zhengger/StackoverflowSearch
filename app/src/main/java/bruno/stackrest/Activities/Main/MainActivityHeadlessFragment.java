@@ -1,9 +1,10 @@
-package bruno.stackrest.Activities.MainActivity;
+package bruno.stackrest.Activities.Main;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import bruno.stackrest.Fragments.BaseFragment;
+import bruno.stackrest.AbstractClasses.BaseFragment;
+import bruno.stackrest.R;
 import bruno.stackrest.Utilities.C;
 
 /**
@@ -23,11 +24,11 @@ public class MainActivityHeadlessFragment extends BaseFragment {
         if (searchServiceResult.equals(C.SearchService.SearchServiceResult.DOWNLOAD_SUCCESSFUL)) {
             parentActivity.startSearchResultsActivity(searchTerm);
         } else if (searchServiceResult.equals(C.SearchService.SearchServiceResult.DOWNLOAD_FAILED)) {
-            parentActivity.displaySnackbarMessage("Download failed!");
+            parentActivity.displaySnackbarMessage(getString(R.string.error_download_failed));
         } else if (searchServiceResult.equals(C.SearchService.SearchServiceResult.DATABASE_ERROR)) {
-            parentActivity.displaySnackbarMessage("Database threw an error, not cool!");
+            parentActivity.displaySnackbarMessage(getString(R.string.error_database));
         } else if (searchServiceResult.equals(C.SearchService.SearchServiceResult.ZERO_SEARCH_RESULTS)){
-            parentActivity.displaySnackbarMessage("No search result was obtained!");
+            parentActivity.displaySnackbarMessage(getString(R.string.error_search_no_result));
         }
     }
 

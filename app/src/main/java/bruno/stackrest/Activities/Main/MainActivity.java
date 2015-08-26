@@ -1,17 +1,17 @@
-package bruno.stackrest.Activities.MainActivity;
+package bruno.stackrest.Activities.Main;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import bruno.stackrest.Activities.BaseActivity;
+import bruno.stackrest.AbstractClasses.BaseActivity;
 import bruno.stackrest.Activities.SearchResults.SearchResultsActivity;
 import bruno.stackrest.R;
 import bruno.stackrest.Services.StackoverflowInTitleSearch;
+import bruno.stackrest.Utilities.C;
 import bruno.stackrest.Utilities.InputUtilities;
 import bruno.stackrest.Utilities.NetworkUtilities;
 import bruno.stackrest.Utilities.ViewUtilities;
@@ -38,12 +38,12 @@ public class MainActivity extends BaseActivity {
         String inTitleParameter =  searchTermInput.getText().toString();
 
         if (!networkUtilities.isNetworkAvailable()) {
-            Toast.makeText(getBaseContext(), "You need an Internet connection to search Stackoverflow.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), getString(R.string.error_search_no_internet_connection), Toast.LENGTH_SHORT).show();
             return ;
         }
 
         if (!inputUtilities.isInputStringValid(inTitleParameter)) {
-            Toast.makeText(getBaseContext(), "Please enter a search term", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), getString(R.string.error_no_search_input), Toast.LENGTH_SHORT).show();
             return ;
         }
 
@@ -57,13 +57,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void manageHeadlessFragmentBroadcastReceiverLifeCycle() {
-        mainActivityHeadlessFragment = (MainActivityHeadlessFragment) getSupportFragmentManager().findFragmentByTag("tag");
+        mainActivityHeadlessFragment = (MainActivityHeadlessFragment) getSupportFragmentManager().findFragmentByTag(C.Fragments.HEADLESS_FRAGMENT_TAG);
 
         if(mainActivityHeadlessFragment == null) {
-            System.out.println("created fragment again");
             mainActivityHeadlessFragment = new MainActivityHeadlessFragment();
             mainActivityHeadlessFragment.setRetainInstance(true);
-            getSupportFragmentManager().beginTransaction().add(mainActivityHeadlessFragment, "tag").commit();
+            getSupportFragmentManager().beginTransaction().add(mainActivityHeadlessFragment, C.Fragments.HEADLESS_FRAGMENT_TAG).commit();
         }
     }
 

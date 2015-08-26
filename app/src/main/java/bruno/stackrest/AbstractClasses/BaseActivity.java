@@ -1,4 +1,4 @@
-package bruno.stackrest.Activities;
+package bruno.stackrest.AbstractClasses;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;

@@ -45,14 +45,13 @@ public class StackoverflowInTitleSearch extends RoboIntentService {
     protected void onHandleIntent(Intent intent) {
         searchTerm = intent.getStringExtra(C.General.SEARCH_IN_TITLE_PARAMETER);
 
-        String currentProcess = getPackageName() + getString(R.string.services_process); //TODO: get the service name in a dynamic fashion
 
         try {
             response = networkUtilities.getInTitleSearchResultsFromStackoverflow(searchTerm);
-            stopSelfAndBroadcastOutcomeIfSearchYieldedZeroResult(currentProcess);
+            unsuccessfulSearchExitStrategy();
         } catch (Exception exception) {
-            sendBroadcastIntentReturningResultsToActivity(getBaseContext(), searchTerm, C.SearchService.SearchServiceResult.DOWNLOAD_FAILED);
-            systemUtilities.killProcess(currentProcess);
+            broadcastResults(searchTerm, C.SearchService.SearchServiceResult.DOWNLOAD_FAILED);
+            killCurrentProcess();
         }
 
         List<Topic> ListTopic = dataUtilities.convertServerResponseToTopicList(response, searchTerm);
@@ -61,24 +60,28 @@ public class StackoverflowInTitleSearch extends RoboIntentService {
             databaseUtilities.deleteSearchResultsByInTitle(searchTerm);
             databaseUtilities.saveSearchResults(ListTopic);
         } catch (Exception exception) {
-            sendBroadcastIntentReturningResultsToActivity(getBaseContext(), searchTerm, C.SearchService.SearchServiceResult.DATABASE_ERROR);
-            systemUtilities.killProcess(currentProcess);
+            broadcastResults(searchTerm, C.SearchService.SearchServiceResult.DATABASE_ERROR);
+            killCurrentProcess();
         }
-
-        sendBroadcastIntentReturningResultsToActivity(getBaseContext(), searchTerm, C.SearchService.SearchServiceResult.DOWNLOAD_SUCCESSFUL);
+        broadcastResults(searchTerm, C.SearchService.SearchServiceResult.DOWNLOAD_SUCCESSFUL);
     }
 
-    private void stopSelfAndBroadcastOutcomeIfSearchYieldedZeroResult(String currentProcess) {
+    private void unsuccessfulSearchExitStrategy() {
         if (response.getItems().length == 0) {
-            sendBroadcastIntentReturningResultsToActivity(getBaseContext(), searchTerm, C.SearchService.SearchServiceResult.ZERO_SEARCH_RESULTS);
-            systemUtilities.killProcess(currentProcess);
+            broadcastResults(searchTerm, C.SearchService.SearchServiceResult.ZERO_SEARCH_RESULTS);
+            killCurrentProcess();
         }
     }
 
-    private void sendBroadcastIntentReturningResultsToActivity(Context context, String searchTerm, Enum result) {
+    private void killCurrentProcess() {
+        systemUtilities.killProcess(getPackageName() + getString(R.string.services_process));
+    }
+
+
+    private void broadcastResults(String searchTerm, Enum result) {
         Intent intent = new Intent();
         intent.setAction(C.General.STACKOVERFLOW_SEARCH);
-        intent.setPackage(context.getPackageName());
+        intent.setPackage(getBaseContext().getPackageName());
         intent.putExtra(C.General.SEARCH_IN_TITLE_PARAMETER, searchTerm);
         intent.putExtra(C.SearchService.SEARCH_SERVICE_RESULT, result);
 

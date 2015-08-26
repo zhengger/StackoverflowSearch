@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Activities.MainActivity.MainActivity"
+            android:name=".Activities.Main.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
         <activity
             android:name=".Activities.SearchResults.SearchResultsActivity"
             android:label="Search results"
-            android:parentActivityName=".Activities.MainActivity.MainActivity"
+            android:parentActivityName=".Activities.Main.MainActivity"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
         </activity>
 
         <activity
-            android:name=".Activities.WebViewActivity"
+            android:name=".Activities.SingleTopicView.WebViewActivity"
             android:label="StackSearch result"
             android:parentActivityName=".Activities.SearchResults.SearchResultsActivity"
             android:launchMode="singleTask"

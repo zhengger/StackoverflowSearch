@@ -2,16 +2,10 @@ package bruno.stackrest;
 
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 
 import com.robotium.solo.Solo;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import bruno.stackrest.Activities.SearchResults.SearchResultsActivity;
-import bruno.stackrest.Activities.MainActivity.MainActivity;
-import bruno.stackrest.Activities.WebViewActivity;
+import bruno.stackrest.Activities.Main.MainActivity;
 
 
 /**

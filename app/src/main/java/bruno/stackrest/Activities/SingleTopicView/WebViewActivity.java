@@ -1,10 +1,11 @@
-package bruno.stackrest.Activities;
+package bruno.stackrest.Activities.SingleTopicView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+import bruno.stackrest.AbstractClasses.BaseActivity;
 import bruno.stackrest.R;
 import bruno.stackrest.Utilities.C;
 import butterknife.Bind;

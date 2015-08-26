@@ -1,4 +1,4 @@
-package bruno.stackrest.Fragments;
+package bruno.stackrest.AbstractClasses;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

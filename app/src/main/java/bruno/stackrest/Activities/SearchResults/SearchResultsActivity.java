@@ -13,8 +13,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import bruno.stackrest.Activities.BaseActivity;
-import bruno.stackrest.Activities.WebViewActivity;
+import bruno.stackrest.AbstractClasses.BaseActivity;
+import bruno.stackrest.Activities.SingleTopicView.WebViewActivity;
 import bruno.stackrest.Adapters.TopicAdapter;
 import bruno.stackrest.POJOs.Topic;
 import bruno.stackrest.R;
@@ -22,6 +22,8 @@ import bruno.stackrest.Services.StackoverflowInTitleSearch;
 import bruno.stackrest.Utilities.C;
 import bruno.stackrest.Utilities.DatabaseUtilities;
 import butterknife.Bind;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectExtra;
 
@@ -37,11 +39,11 @@ public class SearchResultsActivity extends BaseActivity {
     private DatabaseUtilities databaseUtilities;
 
     @Bind(android.R.id.list)
-    ListView mListView;
+    ListView listView;
 
     private List<Topic> ListTopic ;
     private View header;
-    private TopicAdapter mAdapter ;
+    private TopicAdapter adapter;
 
     @Override
     protected void onCreate(Bundle Icicle) {
@@ -49,29 +51,27 @@ public class SearchResultsActivity extends BaseActivity {
 
         fetchDataAndSetListAdapter();
         initializeHeader();
-        initializeClickListener();
     }
 
     protected void fetchDataAndSetListAdapter() {
         try {
             ListTopic = databaseUtilities.getListTopicByInTitle(searchTerm);
         } catch (Exception exception) {
-            displaySnackbarMessage("A database error occured!  ");
+            displaySnackbarMessage(getString(R.string.error_database));
         }
-        mAdapter = new TopicAdapter(getBaseContext(), R.layout.item_searchresult, ListTopic);  //TODO: It seems like this is inefficient here.
-        mListView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+        adapter = new TopicAdapter(getBaseContext(), R.layout.item_searchresult, ListTopic);
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void manageHeadlessFragmentBroadcastReceiverLifeCycle() {
-        searchResultsHeadlessFragment = (SearchResultsHeadlessFragment) getSupportFragmentManager().findFragmentByTag("tag");
+        searchResultsHeadlessFragment = (SearchResultsHeadlessFragment) getSupportFragmentManager().findFragmentByTag(C.Fragments.HEADLESS_FRAGMENT_TAG);
 
         if(searchResultsHeadlessFragment == null) {
-            System.out.println("created fragment again");
             searchResultsHeadlessFragment = new SearchResultsHeadlessFragment();
             searchResultsHeadlessFragment.setRetainInstance(true);
-            getSupportFragmentManager().beginTransaction().add(searchResultsHeadlessFragment, "tag").commit();
+            getSupportFragmentManager().beginTransaction().add(searchResultsHeadlessFragment, C.Fragments.HEADLESS_FRAGMENT_TAG).commit();
         }
     }
 
@@ -82,24 +82,19 @@ public class SearchResultsActivity extends BaseActivity {
         return intent;
     }
 
-    private void initializeClickListener() { //TODO: is there an easier click listener annotation?
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    refreshDataFromServer();
-                } else {
-                    startWebView(position);
-                }
-            }
-
-        });
+    @OnItemClick(android.R.id.list) void onItemClick(int position)  {
+        if (position == 0) {
+            refreshDataFromServer();
+        } else {
+            startWebView(position);
+        }
     }
 
     private void startWebView (Integer position) {
-        Intent Intent = WebViewActivity.makeIntent(this, ListTopic.get(position - 1).getTopicLink());
+        Intent intent = WebViewActivity.makeIntent(this, ListTopic.get(position - 1).getTopicLink());
 
-        Intent.putExtra(C.General.URL, (ListTopic.get(position - 1).getTopicLink()));
-        startActivity(Intent);
+        intent.putExtra(C.General.URL, (ListTopic.get(position - 1).getTopicLink()));
+        startActivity(intent);
     }
 
     private void refreshDataFromServer() {
@@ -109,11 +104,11 @@ public class SearchResultsActivity extends BaseActivity {
     }
 
     private void initializeHeader() {
-        if (mListView.getHeaderViewsCount() == 0) {
+        if (listView.getHeaderViewsCount() == 0) {
             LayoutInflater mInflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             header = mInflater.inflate(R.layout.list_header, null);
-            mListView.addHeaderView(header);   }
+            listView.addHeaderView(header);
+        }
     }
-
 }
 
